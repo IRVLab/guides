@@ -115,7 +115,7 @@ sudo apt install ubuntu-desktop
 sudo apt install lightdm # The CUDA drivers may conflict with the ones required for gdm3; lightdm works much better[11/2025].
 ```
 
-> Once you install the desktop, reboot the system, and you will now have Ubuntu installed on your machine.
+> Make sure to use lightdm and not gdm3 for your desktop environment. Once you install the desktop, reboot the system, and you will now have Ubuntu installed on your machine.
 - The username and password for the initial Ubuntu account are `ubuntu`/`ubuntu`
 - You will need to create a new account and change admin privileges to ensure security
 
