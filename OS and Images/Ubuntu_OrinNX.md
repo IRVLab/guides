@@ -9,7 +9,8 @@ This document will serve as a guide on how to install the latest Ubuntu image (2
 - [Recovery Mode](#step-1-put-the-jetson-in-recovery-mode)
 - [Bootloader Setup](#step-2-prepare-the-linux-for-tegra-bootloader)
 - [Ubuntu Image](#step-3-download-latest-ubuntu-image)
-- [Desktop Install](#step-4-run-ubuntu-on-the-orin-nx)
+- [NVIDIA Drivers](#step-4-install-cuda-drivers-and-nvidia-software)
+- [Desktop Install](#step-5-run-ubuntu-on-the-orin-nx)
 
 <br>
 
@@ -80,12 +81,38 @@ Once you have the image installed on the drive, you may see an option to 'run' t
 
 <br>
 
-## Step 4: Run Ubuntu on the Orin NX
+## Step 4: Install CUDA Drivers and NVIDIA Software
+
+SDKs like CUDA Toolkit and TensorRT that allow building AI applications on Jetson devices are available directly from NVIDIA:
+
+```bash
+# CUDA
+sudo apt-key adv --fetch-keys "https://repo.download.nvidia.com/jetson/jetson-ota-public.asc"
+sudo add-apt-repository -y "deb https://repo.download.nvidia.com/jetson/t234 r36.4 main"
+sudo add-apt-repository -y "deb https://repo.download.nvidia.com/jetson/common r36.4 main"
+sudo apt install -y cuda
+
+# Tensor RT
+sudo apt install -y libnvinfer-bin libnvinfer-samples
+
+# cuda-samples dependencies
+sudo apt install -y cmake
+
+echo "export PATH=/usr/local/cuda-12.6/bin\${PATH:+:\${PATH}}" >> ~/.profile
+echo "export LD_LIBRARY_PATH=/usr/local/cuda-12.6/lib64\${LD_LIBRARY_PATH:+:\${LD_LIBRARY_PATH}}" >> ~/.profile
+
+# Logout or reboot to apply the profile change
+sudo reboot
+```
+<br>
+
+## Step 5: Run Ubuntu on the Orin NX
 
 The image installed is a server image. If you don't need a GUI, this is the end of the process. Once you follow the prompted steps for the Ubuntu installation, the Jetson will run Ubuntu on boot. To install Ubuntu desktop, run the following command in the shell:
 
 ```bash
 sudo apt install ubuntu-desktop
+sudo apt install lightdm # The CUDA drivers may conflict with the ones required for gdm3; lightdm works much better[11/2025].
 ```
 
 > Once you install the desktop, reboot the system, and you will now have Ubuntu installed on your machine.
